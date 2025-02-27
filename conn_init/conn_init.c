@@ -19,7 +19,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <sys/stat.h>
 #define TAG "conn_init"
 #define MAC_PARTITION1 "/dev/block/platform/sdhci-tegra.3/by-name/BKB"
 #define MAC_PARTITION2 "/dev/block/platform/700b0600.sdhci/by-name/BKB"

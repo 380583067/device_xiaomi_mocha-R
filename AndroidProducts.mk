@@ -14,9 +14,9 @@
 # limitations under the License.
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/exthm_mocha.mk
+    $(LOCAL_DIR)/lineage_mocha.mk
     
 COMMON_LUNCH_CHOICES := \
-    exthm_mocha-user \
-    exthm_mocha-userdebug \
-    exthm_mocha-eng
+    lineage_mocha-user \
+    lineage_mocha-userdebug \
+    lineage_mocha-eng
