@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 
-
 # Path
 LOCAL_PATH := device/xiaomi/mocha
 
@@ -22,11 +21,11 @@ LOCAL_PATH := device/xiaomi/mocha
 BUILD_BROKEN_DUP_RULES := true
 
 # Audio
+USE_XML_AUDIO_POLICY_CONF := 1
 USE_CUSTOM_AUDIO_POLICY  := 1
 BOARD_USES_GENERIC_AUDIO := false
 BOARD_USES_ALSA_AUDIO := true
 BOARD_USES_TINYHAL_AUDIO := true
-TARGET_LD_SHIM_LIBS := /system/vendor/lib/hw/audio.primary.vendor.tegra.so|libmocha_audio.so
 
 # Architecture
 TARGET_CPU_ABI := armeabi-v7a
@@ -42,7 +41,6 @@ TARGET_USES_64_BIT_BINDER := true
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_BCM := true
-BCM_BLUETOOTH_MANTA_BUG := true
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(LOCAL_PATH)/bluetooth
 
 # Board
@@ -56,9 +54,8 @@ TARGET_SCREEN_WIDTH := 1536
 TARGET_BOOTANIMATION_HALF_RES := true
 
 # Camera
-#TARGET_HAS_LEGACY_CAMERA_HAL1 := true
-#TARGET_NEEDS_PLATFORM_TEXT_RELOCATIONS := true
-#TARGET_LD_SHIM_LIBS += /system/vendor/lib/hw/camera.tegra.so|/system/vendor/lib/libcamera_shim.so
+TARGET_HAS_LEGACY_CAMERA_HAL1 := true
+TARGET_NEEDS_PLATFORM_TEXT_RELOCATIONS := true
 
 # Dexpreopt
 ifeq ($(HOST_OS),linux)
@@ -70,25 +67,13 @@ ifeq ($(HOST_OS),linux)
   endif
 endif
 
-# Disable HW based full disk encryption
-TARGET_HW_DISK_ENCRYPTION := false
-
-# Enable peripheral manager
-TARGET_PER_MGR_ENABLED := true
-
-# IPA
-USE_DEVICE_SPECIFIC_DATA_IPA_CFG_MGR := true
-
 # ELF
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 BUILD_BROKEN_PREBUILT_ELF_FILES := true
 LOCAL_CHECK_ELF_FILES := false
 
 # FM
-BOARD_HAVE_ALTERNATE_FM := true
 BOARD_HAVE_BCM_FM := true
-BOARD_HAVE_FM_RADIO := true
-BOARD_DISABLE_FMRADIO_LIBJNI := true
 
 # FS
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
@@ -143,8 +128,6 @@ BOARD_BOOTIMAGE_PARTITION_SIZE := 20971520
 BOARD_PERSISTIMAGE_PARTITION_SIZE := 16777216
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 20971520
 BOARD_FLASH_BLOCK_SIZE := 131072
-TARGET_KERNEL_ADDITIONAL_FLAGS := \
-    HOSTCFLAGS="-fuse-ld=lld -Wno-unused-command-line-argument"
 
 # LINEAGEHW
 JAVA_SOURCE_OVERLAYS := org.lineageos.hardware|$(LOCAL_PATH)/lineagehw|**/*.java
@@ -154,9 +137,6 @@ MALLOC_SVELTE := true
 
 # Memfd
 TARGET_HAS_MEMFD_BACKPORT := true
-
-# Lights
-TARGET_PROVIDES_LIBLIGHT := true
 
 # Offmode Charging
 BOARD_CHARGER_DISABLE_INIT_BLANK := true
@@ -194,11 +174,15 @@ BOARD_SEPOLICY_DIRS += $(LOCAL_PATH)/sepolicy/mocha \
                       
 # SHIMS
 TARGET_LD_SHIM_LIBS := \
-    /system/vendor/lib/hw/hwcomposer.tegra.so|/system/vendor/lib/libshim_camera.so \
-    /system/vendor/lib/libnvcap_video.so|/system/vendor/lib/libshim_camera.so \
+    /system/vendor/lib/libnvomxadaptor.so|libmocha_omx.so \
+    /system/lib/hw/camera.vendor.tegra.so|libmocha_camera.so \
+    /system/lib/hw/camera.vendor.tegra.so|libmocha_libc.so \
+    /system/vendor/lib/hw/hwcomposer.tegra.so|libshim_camera.so \
+    /system/vendor/lib/libnvcap_video.so|libshim_camera.so \
     /system/vendor/lib/libnvgr.so|libshim_atomic.so \
     /system/vendor/lib/mediadrm/libwvdrmengine.so|libprotobuf_shim.so \
-    /system/vendor/lib/hw/camera.vendor.tegra.so|libnvomxadaptor_shim.so
+    /system/vendor/lib/hw/camera.vendor.tegra.so|libnvomxadaptor_shim.so \
+    /system/vendor/lib/libnvomxadaptor.so|libnvomxadaptor_shim.so
 
 # ThermalHAL
 TARGET_THERMALHAL_VARIANT := tegra
@@ -220,6 +204,6 @@ WIFI_DRIVER_FW_PATH_PARAM        := "/sys/module/bcmdhd/parameters/firmware_path
 #WIFI_DRIVER_MODULE_ARG           := "iface_name=wlan0"
 #WIFI_DRIVER_MODULE_NAME          := "bcmdhd"
 WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
-                      
+                       
 # Zygote whitelist extra paths
 ZYGOTE_WHITELIST_PATH_EXTRA := \"/dev/nvhost-ctrl\",\"/dev/nvmap\",
