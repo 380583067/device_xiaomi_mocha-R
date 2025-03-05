@@ -14,6 +14,9 @@ on early-init
 on init
     mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
     mkdir /storage/sdcard1 0700 root sdcard_r
+    
+    # Mount and bind audio_policy_configuration.xml in /vendor
+    mount none /system/etc/audio_policy_configuration.xml /vendor/etc/audio/audio_policy_configuration.xml bind
 
     # Support legacy paths
     symlink /sdcard /mnt/sdcard
@@ -31,10 +34,6 @@ on init
 
     # create directory for mounting user calibration partition
     mkdir /mnt/usercalib 0771 system system
-
-    #radio.noril true  
-    setprop ro.radio.noril true
-
 
 start watchdogd
 
@@ -233,7 +232,7 @@ service watchdogd /sbin/watchdogd 10 110
     class core
     seclabel u:r:watchdogd:s0
 
-#Logcat in cache folder while is in bootanimation
+# Logcat in cache folder while is in bootanimation
 service logger /system/bin/logcat -b all -D -f /cache/boot_log.txt
     class main
     user root
