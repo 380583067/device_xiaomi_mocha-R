@@ -350,7 +350,9 @@ PRODUCT_PACKAGES += \
 
 # Widevine DRM
 PRODUCT_PACKAGES += \
-    libprotobuf_shim \
+    libprotobuf_shim
+
+PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/seccomp/mediacodec.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy
 
 # Wifi
