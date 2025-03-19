@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 
-
 # Path
 LOCAL_PATH := device/xiaomi/mocha
 
@@ -22,11 +21,11 @@ LOCAL_PATH := device/xiaomi/mocha
 BUILD_BROKEN_DUP_RULES := true
 
 # Audio
+USE_XML_AUDIO_POLICY_CONF := 1
 USE_CUSTOM_AUDIO_POLICY  := 1
 BOARD_USES_GENERIC_AUDIO := false
 BOARD_USES_ALSA_AUDIO := true
 BOARD_USES_TINYHAL_AUDIO := true
-TARGET_LD_SHIM_LIBS := /system/vendor/lib/hw/audio.primary.vendor.tegra.so|libmocha_audio.so
 
 # Architecture
 TARGET_CPU_ABI := armeabi-v7a
@@ -75,6 +74,9 @@ BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 BUILD_BROKEN_PREBUILT_ELF_FILES := true
 LOCAL_CHECK_ELF_FILES := false
 
+# Exclude AudioFX
+TARGET_EXCLUDES_AUDIOFX := true
+
 # FM
 BOARD_HAVE_BCM_FM := false
 
@@ -89,8 +91,12 @@ TARGET_USES_MKE2FS := true
 #TARGET_SCREEN_DENSITY := 480
 
 # Graphics
-USE_OPENGL_RENDERER := true
+NUM_FRAMEBUFFER_SURFACE_BUFFERS := 2
 BOARD_DISABLE_TRIPLE_BUFFERED_DISPLAY_SURFACES := true
+TARGET_DISABLE_POSTRENDER_CLEANUP := true
+SF_VSYNC_EVENT_PHASE_OFFSET_NS := 5000000
+VSYNC_EVENT_PHASE_OFFSET_NS := 7500000
+
 
 # Health _ Android-9.0
 #DEVICE_FRAMEWORK_MANIFEST_FILE := system/libhidl/vintfdata/manifest_healthd_exclude.xml
