@@ -1,0 +1,2 @@
+allow logpersist self:capability dac_override;
+ 
