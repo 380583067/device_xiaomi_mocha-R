@@ -45,7 +45,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Graphics
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.opengles.version=196610\
+    ro.opengles.version=196610 \
     ro.sf.lcd_density=326 \
     persist.tegra.compositor=surfaceflinger \
     persist.tegra.decompression=cde-client \
