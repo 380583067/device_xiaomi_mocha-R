@@ -1,10 +1,10 @@
-#Copyright (c) 2011-2014 NVIDIA Corporation.  All Rights Reserved.
+# Copyright (c) 2011-2014 NVIDIA Corporation.  All Rights Reserved.
 #
-#NVIDIA Corporation and its licensors retain all intellectual property and
-#proprietary rights in and to this software and related documentation.  Any
-#use, reproduction, disclosure or distribution of this software and related
-#documentation without an express license agreement from NVIDIA Corporation
-#is strictly prohibited.
+# NVIDIA Corporation and its licensors retain all intellectual property and
+# proprietary rights in and to this software and related documentation.  Any
+# use, reproduction, disclosure or distribution of this software and related
+# documentation without an express license agreement from NVIDIA Corporation
+# is strictly prohibited.
 
 on early-init
     # create /oem symbol link
@@ -17,7 +17,7 @@ on early-init
     chmod 0755 /lbh
     chown root system /lbh
 
-    #hack to make hacked mipad GL blobs work (need /gl/libEGL_tegra.so path)
+    # hack to make hacked mipad GL blobs work (need /gl/libEGL_tegra.so path)
     symlink /system/lib/egl /gl
     chmod 0755 /gl
     chown root system /gl
@@ -34,7 +34,6 @@ on post-fs-data
     mkdir /data/system/devices/keylayout 0774 system system
     restorecon_recursive /data/system/devices/keylayout
 
-    
 on boot
     #max resolution supported for Miracast is 1080p, represented interms of macroblocks
     setprop nvwfd.maxresolution_macroblocks 8160
@@ -42,7 +41,7 @@ on boot
     setprop nvwfd.gamemode 1
 
 on init
-     setprop ro.feature.stylus 1
+    setprop ro.feature.stylus 1
     setprop persist.tegra.cursor.enable 1
     setprop sf.async.cursor.enable 1
     setprop input.tch_blk.enabled 1

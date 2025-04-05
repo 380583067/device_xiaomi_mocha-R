@@ -50,7 +50,6 @@ on init
     setprop sys.esrd.check_screen_off 1
     chown system system /sys/power/sysedp/batmon/esr
     chown system system /sys/bus/i2c/devices/1-0040/iio_device/running_mode
-    export LD_SHIM_LIBS /system/vendor/lib/libnvomxadaptor.so|libmocha_omx.so:/system/vendor/lib/hw/camera.vendor.tegra.so|libmocha_camera.so:/system/vendor/lib/hw/camera.vendor.tegra.so|libmocha_libc.so
 
 on fs
     mount_all  /vendor/etc/fstab.tn8
@@ -58,6 +57,10 @@ on fs
 
 on property:dev.bootcomplete=1
     start vendor.init_renderer
+    start vendor.hwcomposer-2-1
+
+on property:apexd.status=ready
+    mount none /system/etc/swcodec/ld.config.txt /apex/com.android.media.swcodec/etc/ld.config.txt bind
 
 service vendor.init_renderer /vendor/bin/init.renderer.sh
     user root
