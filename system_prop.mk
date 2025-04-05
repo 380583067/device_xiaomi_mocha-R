@@ -1,4 +1,4 @@
-#ADB
+# ADB
 PRODUCT_PROPERTY_OVERRIDES += \
   persist.service.adb.enable=1 \
   persist.service.debuggable=1 \
@@ -45,11 +45,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Graphics
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.opengles.version=196610 \
-    ro.sf.lcd_density=326 \
+    ro.opengles.version=196609 \
+    ro.sf.lcd_density=320 \
     persist.tegra.compositor=surfaceflinger \
     persist.tegra.decompression=cde-client \
-    ro.surface_flinger.use_frame_rate_api=false \
     ro.hardware.vulkan=nvgpu \
     debug.sf.latch_unsignaled=1 \
     debug.sf.disable_backpressure=1 \
@@ -57,11 +56,15 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.zygote.disable_gl_preload=true \
     persist.vendor.tegra.composite.policy=composite-yuv \
     debug.hwc.force_gpu=1 \
-    persist.sys.ui.hw=true \
+    persist.sys.ui.hw=false \
     debug.hwui.use_buffer_age=false \
     debug.hwui.renderer=opengl \
-    ro.surface_flinger.max_frame_buffer_acquired_buffers=2 \
+    ro.surface_flinger.max_frame_buffer_acquired_buffers=3 \
     debug.sf.disable_hwc=1
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    dalvik.vm.jit.codecachesize=512k \
+    dalvik.vm.jit.threshold=10 
 
 # Lineage genuine
 PRODUCT_PROPERTY_OVERRIDES += \

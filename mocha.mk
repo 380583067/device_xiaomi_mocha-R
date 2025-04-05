@@ -28,6 +28,7 @@ PRODUCT_PACKAGES += \
     android.hardware.audio@6.0 \
     android.hardware.audio@6.0-impl \
     android.hardware.audio.effect@6.0-impl \
+    android.hardware.soundtrigger@2.0-impl \
     audio.a2dp.default \
     audio.usb.default \
     audio.r_submix.default \
@@ -75,17 +76,18 @@ PRODUCT_PACKAGES += \
 
 # Camera
 #PRODUCT_COPY_FILES += \
-#    $(LOCAL_PATH)/camera/nvcamera.conf:$(TARGET_COPY_OUT_VENDOR)/etc/nvcamera.conf \
-#    $(LOCAL_PATH)/camera/model_frontal.xml:$(TARGET_COPY_OUT_VENDOR)/etc/model_frontal.xml
+#    $(LOCAL_PATH)/camera/nvcamera.conf:system/etc/nvcamera.conf \
+#    $(LOCAL_PATH)/camera/model_frontal.xml:system/vendor/etc/model_frontal.xml
 
 #PRODUCT_PACKAGES += \
+#    camera.device@3.2-impl \
 #    android.hardware.camera.provider@2.4-impl \
-#    camera.device@1.0-impl \
 #    camera.tegra \
 #    libmocha_camera \
 #    libmocha_omx \
 #    libpowerservice_client \
 #    libmocha_libc
+
 # Camera
 PRODUCT_PACKAGES += \
     libshim_camera
@@ -102,24 +104,19 @@ PRODUCT_PACKAGES += \
     android.hardware.configstore@1.1-impl \
     android.hardware.configstore@1.1-service
 
-# Custom tiles
-PRODUCT_PACKAGES += \
-    explorer
-
-# Dexpreopt
-PRODUCT_DEXPREOPT_SPEED_APPS += \
-    SystemUI
-
 # DRM HAL
 PRODUCT_PACKAGES += \
     android.hardware.drm@1.0-impl \
     android.hardware.drm@1.0-service \
     android.hardware.drm@1.1-service.clearkey
-   
+
+PRODUCT_COPY_FILES += \
+    prebuilts/vndk/v29/arm/arch-arm-armv7-a-neon/shared/vndk-core/libprotobuf-cpp-full.so:$(TARGET_COPY_OUT_VENDOR)/lib/libprotobuf-cpp-full-v29.so
+
 # Doze
-PRODUCT_PACKAGES += \
-    XiaomiParts \
-    DeviceSettings
+#PRODUCT_PACKAGES += \
+#    XiaomiParts \
+#    DeviceSettings
 
 # fastbootd
 PRODUCT_PACKAGES += \
@@ -130,8 +127,12 @@ PRODUCT_PACKAGES += \
     setup_fs
 
 # FM
-#PRODUCT_PACKAGES += \
-#    android.hardware.broadcastradio@1.0-impl
+PRODUCT_PACKAGES += \
+    android.hardware.broadcastradio@1.0-impl \
+    FMRadio \
+    brcm-uim-sysfs \
+    libfmjni \
+    libfmradio.v4l2-fm
 
 # Graphics
 PRODUCT_AAPT_CONFIG += xlarge large
@@ -141,6 +142,8 @@ TARGET_TEGRA_VERSION := t124
 
 PRODUCT_PACKAGES += \
     android.hardware.graphics.allocator@2.0-impl \
+    android.hardware.graphics.allocator@3.0-impl \
+    android.hardware.graphics.allocator@4.0-impl \
     android.hardware.graphics.allocator@2.0-service \
     android.hardware.graphics.composer@2.1-service \
     android.hardware.graphics.mapper@2.0-impl \
@@ -148,11 +151,6 @@ PRODUCT_PACKAGES += \
     libs \
     libshim_zw \
     libshim_atomic
-
-# Health HAL
-PRODUCT_PACKAGES += \
-    android.hardware.health@2.0-impl \
-    android.hardware.health@2.0-service
 
 # HIDL
 PRODUCT_PACKAGES += \
@@ -166,10 +164,6 @@ PRODUCT_PACKAGES += \
     libhidltransport \
     libhwbinder
 
-# Gatekeeper
-PRODUCT_PACKAGES += \
-    android.hardware.gatekeeper@1.0-service.software
-
 # Healthd
 PRODUCT_PACKAGES += \
     android.hardware.health@2.0-service\
@@ -180,24 +174,23 @@ PRODUCT_PACKAGES += \
 # HIDL Manifest
 vintf_fragments += \
     $(LOCAL_PATH)/manifest.xml:system/vendor/manifest.xml
+    
+# Key layouts
+PRODUCT_PACKAGES += \
+    tegra-kbc.kl \
+    Vendor_0955_Product_7210.kl
 
 # Keymaster
 PRODUCT_PACKAGES += \
     android.hardware.keymaster@3.0-impl \
     android.hardware.keymaster@3.0-service
 
-# keylayout
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/keylayout/tegra-kbc.kl:system/usr/keylayout/tegra-kbc.kl \
-    $(LOCAL_PATH)/keylayout/gpio-keys.kl:system/usr/keylayout/gpio-keys.kl \
-    $(LOCAL_PATH)/keylayout/Vendor_0955_Product_7210.kl:system/usr/keylayout/Vendor_0955_Product_7210.kl
-
 # Light
 PRODUCT_PACKAGES += \
     android.hardware.light@2.0-service.mocha
 
 # LiveDisplay
-#   PRODUCT_PACKAGES += vendor.lineage.livedisplay@2.0-service-nvidia
+#PRODUCT_PACKAGES += vendor.lineage.livedisplay@2.0-service-nvidia
 
 # Media config
 PRODUCT_PACKAGES += \
@@ -215,14 +208,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     android.hardware.memtrack@1.0-impl \
     android.hardware.memtrack@1.0-service    
-
-# Memory Optimizations
-PRODUCT_PROPERTY_OVERRIDES += \
-     ro.vendor.qti.am.reschedule_service=true \
-     ro.vendor.qti.sys.fw.use_trim_settings=true \
-     ro.vendor.qti.sys.fw.trim_empty_percent=50 \
-     ro.vendor.qti.sys.fw.trim_cache_percent=100 \
-     ro.vendor.qti.sys.fw.empty_app_percent=25
 
 # NVIDIA
 PRODUCT_COPY_FILES += \
@@ -284,6 +269,7 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.sensor.stepdetector.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.stepdetector.xml \
     frameworks/native/data/etc/android.software.app_widgets.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.app_widgets.xml
 
+# Product
 PRODUCT_CHARACTERISTICS := tablet
 
 # PHS
@@ -294,13 +280,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.power@1.0-service.mocha \
     power.tegra
-
-# Ship libprotobuf-cpp-lite-v29.so for fix _ZN6google8protobuf8internal13empty_string_E
-PRODUCT_COPY_FILES += \
-    prebuilts/vndk/v29/arm/arch-arm-armv7-a-neon/shared/vndk-core/libprotobuf-cpp-lite.so:$(TARGET_COPY_OUT_VENDOR)/lib/libprotobuf-cpp-lite-v29.so \
-
-# Product
-PRODUCT_CHARACTERISTICS := tablet
 
 # Ramdisk
 PRODUCT_PACKAGES += \
@@ -347,7 +326,7 @@ PRODUCT_SOONG_NAMESPACES += device/xiaomi/mocha
 PRODUCT_PACKAGES += \
     android.hardware.thermal@1.0-impl \
     android.hardware.thermal@1.0-service \
-    thermal.tn8.xml
+    thermal.tegra
 
 # TimeKeep
 PRODUCT_PACKAGES += \
@@ -358,9 +337,13 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     vendor.lineage.trust@1.0-service
 
+# Touch
+PRODUCT_PACKAGES += \
+    vendor.lineage.touch@1.0-service.mocha
+
 # USB HAL
 PRODUCT_PACKAGES += \
-    android.hardware.usb@1.0-service.basic
+    android.hardware.usb@1.0-service
 
 # Use legacy ADB USB support
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -370,15 +353,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PACKAGES += \
     android.hardware.vibrator@1.0-service.mocha
 
-
 # Widevine DRM
 PRODUCT_PACKAGES += \
     libprotobuf_shim
 
-# Vendor seccomp policy files for media components:
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/seccomp/mediacodec.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy \
-    $(LOCAL_PATH)/seccomp/mediaextractor.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediaextractor.policy
+    $(LOCAL_PATH)/seccomp/mediacodec.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy
 
 # Wifi
 PRODUCT_COPY_FILES += \
