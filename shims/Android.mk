@@ -47,8 +47,8 @@ LOCAL_SHARED_LIBRARIES := libui libgui libstagefright_foundation
 LOCAL_C_INCLUDES := frameworks/native/include frameworks/av/include frameworks/av/media/ndk/include
 LOCAL_CFLAGS := -Wno-unused-private-field
 LOCAL_MODULE := libnvomxadaptor_shim
+LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR_SHARED_LIBRARIES)
 LOCAL_MODULE_TAGS := optional
-LOCAL_VENDOR_MODULE := true
 include $(BUILD_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
@@ -71,9 +71,7 @@ LOCAL_VENDOR_MODULE := true
 include $(BUILD_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
-LOCAL_SRC_FILES := libprotobuf_shim.cpp
-LOCAL_SHARED_LIBRARIES := liblog
-LOCAL_MODULE := libprotobuf_shim
-LOCAL_MODULE_TAGS := optional
-LOCAL_VENDOR_MODULE := true
+LOCAL_MODULE           := libkeymaster_shim
+LOCAL_SRC_FILES        := keymaster_shim.cpp
+LOCAL_VENDOR_MODULE    := true
 include $(BUILD_SHARED_LIBRARY)
