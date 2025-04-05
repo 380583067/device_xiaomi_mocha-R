@@ -106,7 +106,7 @@ public:
 
 };
 
-DO_NOT_DIRECTLY_USE_ME_IMPLEMENT_META_INTERFACE(CameraDeviceCallbacks,
+IMPLEMENT_META_INTERFACE(CameraDeviceCallbacks,
                          "android.hardware.camera2.ICameraDeviceCallbacks");
 
 // ----------------------------------------------------------------------

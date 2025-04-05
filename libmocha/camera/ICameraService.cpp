@@ -333,7 +333,7 @@ public:
 
 };
 
-DO_NOT_DIRECTLY_USE_ME_IMPLEMENT_META_INTERFACE(CameraService, "android.hardware.ICameraService");
+IMPLEMENT_META_INTERFACE(CameraService, "android.hardware.ICameraService");
 
 // ----------------------------------------------------------------------
 

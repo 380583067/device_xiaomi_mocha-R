@@ -1,6 +1,5 @@
 /*
- * Copyright (C) 2012-2016 The CyanogenMod Project
- *           (C) 2017-2019 The LineageOS Project
+ * Copyright (C) 2017, The LineageOS Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,32 +14,13 @@
  * limitations under the License.
  */
 
-/**
-* @file CameraWrapper.cpp
-*
-* This file wraps a vendor camera module.
-*
-*/
-
-// #define LOG_NDEBUG 0
-// #define LOG_PARAMETERS
+#define LOG_NDEBUG 0
+#define LOG_PARAMETERS
 
 #define LOG_TAG "CameraWrapper"
-#include <log/log.h>
-
-#include <hardware/hardware.h>
-#include <hardware/camera.h>
-#include <sensor/SensorManager.h>
-#include <utils/threads.h>
-#include <utils/String8.h>
-#include <camera/Camera.h>
-#include <camera/CameraParameters.h>
 #include <cutils/log.h>
 #include "CameraWrapper.h"
-
-
-using namespace android;
-
+#include "Camera3Wrapper.h"
 
 
 //------------DEBUG-----------------
@@ -147,7 +127,7 @@ camera_module_t HAL_MODULE_INFO_SYM = {
          .hal_api_version = HARDWARE_HAL_API_VERSION,
          .id = CAMERA_HARDWARE_MODULE_ID,
          .name = "MI PAD Camera Wrapper",
-         .author = "The CyanogenMod Project",
+         .author = "The LineageOS Project",
          .methods = &camera_module_methods,
          .dso = NULL,
          .reserved = {0},
@@ -156,7 +136,7 @@ camera_module_t HAL_MODULE_INFO_SYM = {
     .get_camera_info = camera_get_camera_info,
     .set_callbacks = camera_set_callbacks,
     .get_vendor_tag_ops = camera_get_vendor_tag_ops,
-    .open_legacy = camera_open_legacy,
+    .open_legacy = NULL,
     .set_torch_mode = NULL,
     .init = NULL,
     .reserved = {0},
@@ -172,7 +152,7 @@ static int camera_device_open(const hw_module_t* module, const char* name,
         if (check_vendor_module())
             return -EINVAL;
 
-        rv = camera_device_open(module, name, device);
+        rv = camera3_device_open(module, name, device);
     }
 
     return rv;
@@ -197,7 +177,7 @@ static int camera_get_camera_info(int camera_id, struct camera_info *info)
 
     info->facing = vendor_camera_info.facing;
     info->orientation = vendor_camera_info.orientation;
-    info->device_version = vendor_camera_info.device_version;
+    info->device_version = CAMERA_DEVICE_API_VERSION_3_2;
 
     if (vendorInfo[camera_id] == 0 ) {
         vendorInfo[camera_id] = (camera_metadata_t*)vendor_camera_info.static_camera_characteristics;

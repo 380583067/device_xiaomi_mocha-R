@@ -71,7 +71,7 @@ public:
     }
 };
 
-DO_NOT_DIRECTLY_USE_ME_IMPLEMENT_META_INTERFACE(CameraServiceListener, "android.hardware.ICameraServiceListener");
+IMPLEMENT_META_INTERFACE(CameraServiceListener, "android.hardware.ICameraServiceListener");
 
 // ----------------------------------------------------------------------
 
