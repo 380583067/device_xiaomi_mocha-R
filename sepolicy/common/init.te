@@ -42,3 +42,24 @@ allow init sysfs_mmc_host:lnk_file rw_file_perms;
 # allow init to change power hints node
 allow init sysfs_netcfg:lnk_file rw_file_perms;
 allow init debugfs_cluster:file rw_file_perms;
+
+#BT_Loader
+type init_btloader_exec, exec_type, file_type;
+type init_btloader, domain;
+
+init_daemon_domain(init_btloader)
+
+#Kernel
+allow init kernel:system module_request;
+
+#Sdcard
+allow init tmpfs:lnk_file create;
+
+#pstore
+allow init pstorefs:dir mounton;
+
+allow init ram_device:blk_file write;
+
+allow init sysfs:file setattr;
+
+allow init vendor_file:file execute_no_trans;
