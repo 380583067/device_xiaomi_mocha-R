@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 
-
 # Path
 LOCAL_PATH := device/xiaomi/mocha
 
@@ -22,7 +21,7 @@ LOCAL_PATH := device/xiaomi/mocha
 BUILD_BROKEN_DUP_RULES := true
 
 # Audio
-USE_CUSTOM_AUDIO_POLICY  := 1
+USE_XML_AUDIO_POLICY_CONF := 1
 BOARD_USES_GENERIC_AUDIO := false
 BOARD_USES_ALSA_AUDIO := true
 BOARD_USES_TINYHAL_AUDIO := true
@@ -33,6 +32,7 @@ TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH := arm
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_CPU_VARIANT := cortex-a15
+TARGET_CPU_SMP := true
 TARGET_NOT_USE_GZIP_RECOVERY_RAMDISK := true
 
 # Binder API
@@ -57,7 +57,6 @@ TARGET_BOOTANIMATION_HALF_RES := true
 # Camera
 #TARGET_HAS_LEGACY_CAMERA_HAL1 := true
 #TARGET_NEEDS_PLATFORM_TEXT_RELOCATIONS := true
-#TARGET_LD_SHIM_LIBS += /system/vendor/lib/hw/camera.tegra.so|/system/vendor/lib/libcamera_shim.so
 
 # Dexpreopt
 ifeq ($(HOST_OS),linux)
@@ -91,14 +90,16 @@ TARGET_USES_MKE2FS := true
 #TARGET_SCREEN_DENSITY := 326
 
 # Graphics
-NUM_FRAMEBUFFER_SURFACE_BUFFERS := 2
-BOARD_DISABLE_TRIPLE_BUFFERED_DISPLAY_SURFACES := true
-TARGET_DISABLE_POSTRENDER_CLEANUP := true
-SF_VSYNC_EVENT_PHASE_OFFSET_NS := 5000000
-VSYNC_EVENT_PHASE_OFFSET_NS := 7500000
+TARGET_USES_ION := true
+TARGET_HWC_VSYNC_USES_DEVICE_TIME := true
+TARGET_USE_COMPAT_GRALLOC_PERFORM := false
+TARGET_SURFACE_FLINGER_GLES := true
+NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
+BOARD_DISABLE_TRIPLE_BUFFERED_DISPLAY_SURFACES := false
+TARGET_DISABLE_POSTRENDER_CLEANUP := false
 
 # Gralloc
-TARGET_ADDITIONAL_GRALLOC_10_USAGE_BITS := 0x02000000U
+#TARGET_ADDITIONAL_GRALLOC_10_USAGE_BITS := 0x2000U | 0x02000000U
 
 # Vendor Manifest
 DEVICE_MANIFEST_FILE := $(LOCAL_PATH)/manifest.xml
@@ -115,12 +116,12 @@ TARGET_INIT_VENDOR_LIB      := libinit_mocha
 TARGET_LIBINIT_DEFINES_FILE := $(LOCAL_PATH)/libmocha/init_mocha.cpp
 
 # Kernel
-BOARD_KERNEL_CMDLINE := vpr_resize androidboot.selinux=permissive vmalloc=400M androidboot.hardware=tn8
+BOARD_KERNEL_CMDLINE := vpr_resize androidboot.selinux=permissive vmalloc=400M
 BOARD_KERNEL_BASE := 0x10000000
 BOARD_RAMDISK_OFFSET := 0x02000000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_TAGS_OFFSET := 0x00000100
-TARGET_KERNEL_SOURCE := kernel/xiaomi/mocha
+TARGET_KERNEL_SOURCE := kernel/xiaomi/mocha-R21.8
 TARGET_KERNEL_CONFIG := tegra12_android_defconfig
 BOARD_KERNEL_IMAGE_NAME := zImage
 BOARD_KERNEL_SEPARATED_DT := true
@@ -128,17 +129,21 @@ BOARD_MKBOOTIMG_ARGS := --ramdisk_offset $(BOARD_RAMDISK_OFFSET) --tags_offset $
 BOARD_CUSTOM_BOOTIMG := true
 BOARD_CUSTOM_BOOTIMG_MK := $(LOCAL_PATH)/mkbootimg.mk
 TARGET_KERNEL_CLANG_COMPILE := false
-TARGET_KERNEL_ADDITIONAL_FLAGS := HOSTCFLAGS="-fuse-ld=lld -Wno-unused-command-line-argument"
+TARGET_KERNEL_ADDITIONAL_FLAGS := \
+    HOSTCFLAGS="-fuse-ld=lld -Wno-unused-command-line-argument"
 
 # Filesystem
 #BOARD_SYSTEMIMAGE_PARTITION_SIZE := 671088640 # 640 Mb stock partition table
-BOARD_SYSTEMIMAGE_PARTITION_SIZE := 1337564160 # 1.2 Gb
-BOARD_USERDATAIMAGE_PARTITION_SIZE := 13742637056
-BOARD_CACHEIMAGE_PARTITION_SIZE := 402653184
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 3001024512 # 2.8 Gb
+BOARD_USERDATAIMAGE_PARTITION_SIZE := 11196694528
+BOARD_CACHEIMAGE_PARTITION_SIZE := 387973120
 BOARD_BOOTIMAGE_PARTITION_SIZE := 20971520
 BOARD_PERSISTIMAGE_PARTITION_SIZE := 16777216
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 20971520
 BOARD_FLASH_BLOCK_SIZE := 131072
+
+# A12 TIAOZ 禁用动态分区
+#BOARD_DYNAMIC_PARTITION_ENABLE := false
 
 # LINEAGEHW
 JAVA_SOURCE_OVERLAYS := org.lineageos.hardware|$(LOCAL_PATH)/lineagehw|**/*.java
@@ -148,9 +153,6 @@ MALLOC_SVELTE := true
 
 # Memfd
 TARGET_HAS_MEMFD_BACKPORT := true
-
-# Lights
-TARGET_PROVIDES_LIBLIGHT := true
 
 # Offmode Charging
 BOARD_CHARGER_DISABLE_INIT_BLANK := true
@@ -185,12 +187,9 @@ BOARD_SEPOLICY_DIRS += $(LOCAL_PATH)/sepolicy/mocha \
                       
 # SHIMS
 TARGET_LD_SHIM_LIBS := \
-    /system/vendor/lib/hw/hwcomposer.tegra.so|libshim_camera.so \
-    /system/vendor/lib/libnvcap_video.so|libshim_camera.so \
+    /system/vendor/lib/hw/hwcomposer.tegra.so|/system/vendor/lib/libshim_camera.so \
     /system/vendor/lib/libnvgr.so|libshim_atomic.so \
-    /system/vendor/lib/mediadrm/libwvdrmengine.so|libprotobuf_shim.so \
-    /system/vendor/lib/hw/camera.vendor.tegra.so|libnvomxadaptor_shim.so \
-    /system/vendor/lib/libnvomxadaptor.so|libnvomxadaptor_shim.so
+    /system//vendor/bin/hw/android.hardware.keymaster@3.0-service|/vendor/lib/libkeymaster_shim.so
 
 # ThermalHAL
 TARGET_THERMALHAL_VARIANT := tegra
@@ -207,15 +206,16 @@ BOARD_HOSTAPD_DRIVER             := NL80211
 BOARD_HOSTAPD_PRIVATE_LIB        := lib_driver_cmd_bcmdhd
 WIFI_DRIVER_FW_PATH_STA          := "/vendor/firmware/fw_bcmdhd.bin"
 WIFI_DRIVER_FW_PATH_AP           := "/vendor/firmware/fw_bcmdhd_apsta.bin"
-WIFI_DRIVER_FW_PATH_P2P          := "/vendor/firmware/fw_bcmdhd.bin"
 WIFI_DRIVER_FW_PATH_PARAM        := "/sys/module/bcmdhd/parameters/firmware_path"
 #WIFI_DRIVER_MODULE_ARG           := "iface_name=wlan0"
 #WIFI_DRIVER_MODULE_NAME          := "bcmdhd"
-
 WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
 
 # workaround for devices that uses old GPU blobs
-BOARD_EGL_WORKAROUND_BUG_10194508 := true
+#BOARD_EGL_WORKAROUND_BUG_10194508 := true
                        
 # Zygote whitelist extra paths
 ZYGOTE_WHITELIST_PATH_EXTRA := \"/dev/nvhost-ctrl\",\"/dev/nvmap\",
+
+# Security patch level
+VENDOR_SECURITY_PATCH := 2018-01-01

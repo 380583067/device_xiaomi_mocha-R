@@ -6,10 +6,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
   persist.sys.root_access=2 \
   ro.debuggable = 1
 
-# API
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.product.first_api_level=23
-
 # AptX
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.bt.enableAptXHD=true \
@@ -30,11 +26,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.heapminfree=2m \
     dalvik.vm.heapmaxfree=8m
 
-#DIDIM
+# DIDIM
 PRODUCT_PROPERTY_OVERRIDES += \
-   persist.tegra.didim.enable = 1 \
-   persist.tegra.didim.video = 5 \
-   persist.tegra.didim.normal = 3 \
+   persist.tegra.didim.enable=1 \
+   persist.tegra.didim.video=5 \
+   persist.tegra.didim.normal=3
 
 # DRM
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -46,23 +42,26 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Graphics
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.opengles.version=196610 \
-    ro.sf.lcd_density=326 \
+    ro.opengles.version=196609 \
+    ro.sf.lcd_density=320 \
     persist.tegra.compositor=surfaceflinger \
     persist.tegra.decompression=cde-client \
     ro.surface_flinger.use_frame_rate_api=false \
     ro.hardware.vulkan=nvgpu \
     debug.sf.latch_unsignaled=1 \
-    debug.sf.disable_backpressure=1 \
     ro.input.noresample=1 \
     ro.zygote.disable_gl_preload=true \
     persist.vendor.tegra.composite.policy=composite-yuv \
     debug.hwc.force_gpu=1 \
-    persist.sys.ui.hw=true \
+    persist.sys.ui.hw=false \
     debug.hwui.use_buffer_age=false \
     debug.hwui.renderer=opengl \
-    ro.surface_flinger.max_frame_buffer_acquired_buffers=2 \
+    ro.surface_flinger.max_frame_buffer_acquired_buffers=3 \
     debug.sf.disable_hwc=1
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    dalvik.vm.jit.codecachesize=512k \
+    dalvik.vm.jit.threshold=10 
 
 # Lineage genuine
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -78,7 +77,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
  ro.lmk.downgrade_pressure=100 \
  ro.lmk.kill_heaviest_task=true \
  ro.lmk.kill_timeout_ms=100 \
- ro.lmk.use_minfree_levels=true \
+ ro.lmk.use_minfree_levels=true
 
 # OMX
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -108,18 +107,18 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.sys.sdcardfs=true
 
-# Vendor security patch level
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.lineage.build.vendor_security_patch=2018-01-05
-
-# WiFi
+# Wifi
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.debug.wfd.enable=1 \
     wifi.interface=wlan0 \
     ap.interface=wlan0 \
-    persist.tegra.nvmmlite = 1 \
-    persist.wlan.ti.calibrated = 0
+    persist.tegra.nvmmlite=1 \
+    persist.wlan.ti.calibrated=0
 
 # fastbootd
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.fastbootd.available=true
+
+# Zygote
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.device_config.runtime_native.usap_pool_enabled=true
