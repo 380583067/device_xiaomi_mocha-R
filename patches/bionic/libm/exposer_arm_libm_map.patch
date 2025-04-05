@@ -8,7 +8,7 @@ index a931b933b..1b9675c54 100644
  
 -LIBC_DEPRECATED { # arm platform-only
 -  global: # arm
-+LIBC_PRIVATE { # arm mips
++LIBC_DEPRECATED { # arm mips
 +  global: # arm mips
      __aeabi_d2lz; # arm
      __aeabi_d2ulz; # arm

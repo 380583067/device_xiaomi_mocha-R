@@ -1,7 +1,7 @@
 #!/bin/sh
 
 rootdirectory="$PWD"
-dirs=" bionic/libm frameworks/native frameworks/av hardware/interfaces system/core system/extras"
+dirs=" bionic/libm external/selinux frameworks/av frameworks/native hardware/interfaces system/core system/extras"
 
 
 for dir in $dirs ; do
