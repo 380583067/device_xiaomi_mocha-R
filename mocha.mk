@@ -155,6 +155,12 @@ PRODUCT_PACKAGES += \
     libshim_zw \
     libshim_atomic
 
+# Gatekeeper
+PRODUCT_PACKAGES += \
+    android.hardware.gatekeeper@1.0-impl \
+    android.hardware.gatekeeper@1.0-service \
+    gatekeeper.tegra
+
 # HIDL
 PRODUCT_PACKAGES += \
     android.hidl.base@1.0 \
